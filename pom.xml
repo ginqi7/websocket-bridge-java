@@ -55,7 +55,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>com.qiqijin.WebSocketBridgeDemo</mainClass>
+              <mainClass>com.qiqijin.websocketBridge.WebSocketBridgeDemo</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>

@@ -1,4 +1,4 @@
-package com.qiqijin;
+package com.qiqijin.websocketBridge;
 
 import java.lang.reflect.Type;
 import java.net.URI;
