@@ -30,6 +30,16 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.sonatype.central</groupId>
+        <artifactId>central-publishing-maven-plugin</artifactId>
+        <version>0.7.0</version>
+        <extensions>true</extensions>
+        <configuration>
+          <publishingServerId>central</publishingServerId>
+          <autoPublish>true</autoPublish>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version>
@@ -45,7 +55,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>com.qiqijin.WebSocketBridgeDemo</mainClass> <!-- 替换为你的主类 -->
+              <mainClass>com.qiqijin.WebSocketBridgeDemo</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>
@@ -64,5 +74,16 @@
       </plugin>
     </plugins>
   </build>
-
+  <!-- <distributionManagement> -->
+  <!--   <repository> -->
+  <!--     <id>ossrh</id> -->
+  <!--     <name>OSSRH Release Repository</name> -->
+  <!--     <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url> -->
+  <!--   </repository> -->
+  <!--   <snapshotRepository> -->
+  <!--     <id>ossrh-snapshots</id> -->
+  <!--     <name>OSSRH Snapshots Repository</name> -->
+  <!--     <url>https://oss.sonatype.org/content/repositories/snapshots/</url> -->
+  <!--   </snapshotRepository> -->
+  <!-- </distributionManagement> -->
 </project>
