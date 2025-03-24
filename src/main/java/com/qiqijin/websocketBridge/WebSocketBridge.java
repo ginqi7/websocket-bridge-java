@@ -71,6 +71,7 @@ public class WebSocketBridge extends WebSocketClient
 
     public void evalInEmacs(String code) {
         Map<String, String> message = new HashMap<>();
+        System.out.println(code);
         message.put("type", "eval-code");
         message.put("content", code);
         Gson gson = new Gson();
@@ -93,7 +94,13 @@ public class WebSocketBridge extends WebSocketClient
             .collect(Collectors.joining(" ")))) ;
     }
 
-
+    public void runInEmacs(String func, Map<String, String> args) {
+        evalInEmacs(String.format("(%s %s)",
+            func,
+            args.entrySet().stream().map(entry -> String.format("'%s \"%s\"", entry.getKey(), entry.getValue()))
+                .collect(Collectors.joining(" "))
+        )) ;
+    }
 
     @Override
     public void onClose(int code, String reason, boolean remote) {

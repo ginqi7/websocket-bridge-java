@@ -26,7 +26,7 @@
 
 (defvar java-jar-path
   (expand-file-name
-   "./websocket-bridge-java-1.0-SNAPSHOT-jar-with-dependencies.jar"))
+   "../../../target/websocket-bridge-java-1.0-SNAPSHOT-jar-with-dependencies.jar"))
 
 (defun java-demo-start ()
   "Start websocket bridge real-time-translation."
@@ -44,9 +44,16 @@
   (java-demo-start)
   (websocket-bridge-app-open-buffer "java-demo"))
 
-(websocket-bridge-call "java-demo" "message" "Hello")
+(defun java-demo-plist-message (&rest arg)
+  (let ((name (plist-get arg :name))
+        (id (plist-get arg :id)))
+    (print (format "id %s, name %s" name id))))
+
+(websocket-bridge-call "java-demo" "message" "Hello1")
 
 (websocket-bridge-call "java-demo" "value" "Hello")
+
+(websocket-bridge-call "java-demo" "plist" "Hello")
 
 (websocket-bridge-call "java-demo")
 

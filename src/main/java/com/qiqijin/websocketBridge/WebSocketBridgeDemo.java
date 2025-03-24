@@ -1,7 +1,9 @@
 package com.qiqijin.websocketBridge;
 
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class WebSocketBridgeDemo extends WebSocketBridge {
 
@@ -12,12 +14,20 @@ public class WebSocketBridgeDemo extends WebSocketBridge {
 
     @Override
     public void onMessage(List<String> data) {
+        System.out.println(data);
         switch (data.get(0)) {
 	    case "value":
                 System.out.println(data.get(1));
 		break;
             case "message":
                 this.runInEmacs("message", data.get(1));
+                break;
+            case "plist":
+                this.runInEmacs("message", data.get(1));
+                Map<String, String> map = new HashMap<>();
+                map.put(":name", "Java");
+                map.put(":id", "3.1415926");
+                this.runInEmacs("java-demo-plist-message", map);
                 break;
 	    default:
 		break;
