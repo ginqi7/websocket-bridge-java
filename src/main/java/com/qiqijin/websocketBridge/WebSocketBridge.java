@@ -1,5 +1,9 @@
 package com.qiqijin.websocketBridge;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -7,23 +11,15 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
 
 /**
  * Hello world!
  *
  */
-public class WebSocketBridge extends WebSocketClient
-{
+public class WebSocketBridge extends WebSocketClient {
     private String appName;
     private String serverPort;
     private String url;
@@ -34,7 +30,6 @@ public class WebSocketBridge extends WebSocketClient
         this.appName = appName;
         this.serverPort = serverPort;
     }
-
 
     public WebSocketBridge(URI serverURI) {
         super(serverURI);
@@ -79,35 +74,33 @@ public class WebSocketBridge extends WebSocketClient
         send(jsonString);
     }
 
-    private String argFormat (String arg) {
-        return String.format("\"%s\"", arg);
+    private String argFormat(String arg) {
+        return String.format("\"%s\"", EscapeUtil.escapeString(arg));
     }
 
     public void runInEmacs(String func, String... args) {
         if (args.length == 0) {
             evalInEmacs(String.format("(%s)", func));
         }
-        evalInEmacs(String.format("(%s %s)",
-            func,
-            Arrays.asList(args).stream()
-            .map(this::argFormat)
-            .collect(Collectors.joining(" ")))) ;
+        evalInEmacs(String.format(
+                "(%s %s)",
+                func, Arrays.asList(args).stream().map(this::argFormat).collect(Collectors.joining(" "))));
     }
 
     public void runInEmacs(String func, Map<String, String> args) {
-        evalInEmacs(String.format("(%s %s)",
-            func,
-            args.entrySet().stream().map(entry -> String.format("'%s \"%s\"", entry.getKey(), entry.getValue()))
-                .collect(Collectors.joining(" "))
-        )) ;
+        evalInEmacs(String.format(
+                "(%s %s)",
+                func,
+                args.entrySet().stream()
+                        .map(entry -> String.format("'%s %s", entry.getKey(), argFormat(entry.getValue())))
+                        .collect(Collectors.joining(" "))));
     }
 
     @Override
     public void onClose(int code, String reason, boolean remote) {
         // The close codes are documented in class org.java_websocket.framing.CloseFrame
         System.out.println(
-            "Connection closed by " + (remote ? "remote peer" : "us") + " Code: " + code + " Reason: "
-            + reason);
+                "Connection closed by " + (remote ? "remote peer" : "us") + " Code: " + code + " Reason: " + reason);
     }
 
     @Override
